@@ -1,12 +1,11 @@
-package ru.ivanmurzin.antileaker
+package ru.ivanmurzin.antileaker.utils
 
 import android.util.Log
 import java.io.File
 
+const val MY_FILE_LOGGER = "MY_LOGGER_TAG_FILE" // тэг, по которому доступны логи приложения
+
 class FileManager(private val searchDirs: List<File>) {
-
-    private val MY_FILE_LOGGER = "MY_FILE_LOGGER_TAG" // тэг, по которому доступны логи приложения
-
 
     fun clearDirectory(dirName: String): Boolean {
         var path: String? = getDirectoryPath(dirName) // получаю путь до нужной папки

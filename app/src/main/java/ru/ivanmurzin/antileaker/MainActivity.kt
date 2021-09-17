@@ -1,31 +1,40 @@
 package ru.ivanmurzin.antileaker
 
 import android.Manifest
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.edit
+import kotlinx.android.synthetic.main.activity_main.*
+import ru.ivanmurzin.antileaker.service.TimerService
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var storage: SharedPreferences // локальное хранилище
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestPermissions() // запрашиваю разрешения на чтение и запись файловой системы
+        storage = getSharedPreferences("storage", MODE_PRIVATE)
+        setupUI()
+    }
 
-        val dirs = listOf( // массив папок, по которым будет происходить поиск
-            Environment.getExternalStorageDirectory(), // основная папка хранилища
-            filesDir.parentFile?.parentFile ?: filesDir.parentFile, // папка данных всех приложений
-            Environment.getRootDirectory(), // папка корня
-            Environment.getDataDirectory() // папка данных
-        )
-
-        val fileManager = FileManager(dirs)
-        val result = fileManager.clearDirectory("tester_folder") // чищю директорию test
-        if (!result) // если такой папки не нашлось
-            longToast("Папки tester_folder не нашлось!") // сообщаю об этом
+    private fun setupUI() {
+        button_apply.setOnClickListener {
+            val period = field_period.text.toString().toLong() * 1000 // считываю период удаления
+            val folderName = field_folder.text.toString() // считываю название удаляемой папки
+            text_info.text = "Папка: $folderName\nУдаляется каждые: ${period/1000} sec"
+            val expireTime = System.currentTimeMillis() + period // время первого удаления
+            storage.edit {
+                putLong("expireTime", expireTime) // записываю время первого удаления
+                putLong("period", period) // записываю период удаления
+            }
+            startService(Intent(this, TimerService::class.java)) // запускаю сервис
+        }
     }
 
 
@@ -42,5 +51,4 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, necessaryPermissions, 1)
     }
 
-    private fun longToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
