@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.*
 import android.util.Log
 import androidx.core.content.edit
+import ru.ivanmurzin.antileaker.utils.FileManager
 import ru.ivanmurzin.antileaker.utils.Timer
 
 const val MY_SERVICE_LOGGER = "MY_LOGGER_TAG_SERVICE" // тэг, по которому доступны логи приложения
@@ -23,10 +24,13 @@ class TimerService : Service() {
         val expireTime = storage.getLong("expireTime", System.currentTimeMillis() + 2 * 60 * 1000L)
         val period = storage.getLong("period", 2 * 60 * 1000L)
         val time = expireTime - System.currentTimeMillis() // сколько осталось до обновления таймера
-        Log.d(MY_SERVICE_LOGGER, time.toString())
+        val dir = Environment.getExternalStorageDirectory() // папка поиска
+        val fileManager = FileManager(dir)
+        val folderName = storage.getString("folderName", "tester_folder")!!
         timer = Timer(time, period) {
             // по окончании таймера перезаписываю время истечения
             storage.edit { putLong("expireTime", System.currentTimeMillis() + period) }
+            fileManager.clearDirectory(folderName) // чищю директорию
         }
         timer.start() // запускаю таймер
         super.onCreate()
@@ -44,7 +48,12 @@ class TimerService : Service() {
         val isFromMain = storage.getBoolean("fromMain", false) // я вызвал onDestroy?
         if (isFromMain) { // если да, то
             timer.cancel() // закрываю таймер
-            storage.edit { putBoolean("fromMain", false) } // помечаю, что остальные вызовы не мои
+            storage.edit {
+                putBoolean(
+                    "fromMain",
+                    false
+                )
+            } // помечаю, что остальные вызовы не мои
         }
         super.onDestroy()
     }

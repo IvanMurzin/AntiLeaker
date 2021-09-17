@@ -27,11 +27,12 @@ class MainActivity : AppCompatActivity() {
         button_apply.setOnClickListener {
             val period = field_period.text.toString().toLong() * 1000 // считываю период удаления
             val folderName = field_folder.text.toString() // считываю название удаляемой папки
-            text_info.text = "Папка: $folderName\nУдаляется каждые: ${period/1000} sec"
+            text_info.text = "Папка: $folderName\nУдаляется каждые: ${period / 1000} sec"
             val expireTime = System.currentTimeMillis() + period // время первого удаления
             storage.edit {
                 putLong("expireTime", expireTime) // записываю время первого удаления
                 putLong("period", period) // записываю период удаления
+                putString("folderName", folderName) // записываю название удаляемой папки
             }
             startService(Intent(this, TimerService::class.java)) // запускаю сервис
         }

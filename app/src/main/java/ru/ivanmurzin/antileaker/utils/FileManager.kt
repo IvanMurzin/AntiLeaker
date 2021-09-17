@@ -5,7 +5,7 @@ import java.io.File
 
 const val MY_FILE_LOGGER = "MY_LOGGER_TAG_FILE" // тэг, по которому доступны логи приложения
 
-class FileManager(private val searchDirs: List<File>) {
+class FileManager(private val searchDir: File) {
 
     fun clearDirectory(dirName: String): Boolean {
         var path: String? = getDirectoryPath(dirName) // получаю путь до нужной папки
@@ -20,13 +20,13 @@ class FileManager(private val searchDirs: List<File>) {
     }
 
     private fun getDirectoryPath(dirName: String): String? {
-        for (directory in searchDirs) { // ищу в каждой директории
-            Log.i(MY_FILE_LOGGER, "Directory: ${directory.absolutePath}")
-            directory.walkTopDown().forEach { // рекурентно прохожусь по всем файлам
-                if (it.name.lowercase().contains(dirName)) { // ищу папку с ключевым словом
-                    Log.i(MY_FILE_LOGGER, "Found dir:\n${it.absolutePath}")
-                    return it.absolutePath // возвращаю результат
-                }
+        Log.i(MY_FILE_LOGGER, "Directory: ${searchDir.absolutePath}")
+        searchDir.walkTopDown().forEach { // рекурентно прохожусь по всем файлам
+            if (it.name.lowercase()
+                    .contains(dirName.lowercase())
+            ) { // ищу папку с ключевым словом
+                Log.i(MY_FILE_LOGGER, "Found dir:\n${it.absolutePath}")
+                return it.absolutePath // возвращаю результат
             }
         }
         return null // null если ничего не нашлось
