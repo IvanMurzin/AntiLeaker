@@ -3,51 +3,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/text_info"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        tools:text="Папка: Test\nУдаляется каждые: 10 sec" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/text_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:padding="30dp"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            tools:text="Все процессы отключены" />
 
-    <EditText
-        android:id="@+id/field_folder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
-        android:hint="Название папки"
-        android:textColor="@color/white"
-        android:textSize="30sp" />
+        <TextView
+            android:id="@+id/button_add"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:text="@string/plus"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
 
-    <EditText
-        android:id="@+id/field_period"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/field_folder"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:hint="Период удаления(sec)"
-        android:textColor="@color/white"
-        android:textSize="30sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/button_apply"
-        android:layout_width="200dp"
+    <FrameLayout
+        android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_below="@id/field_period"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:backgroundTint="@color/teal_700"
-        android:text="Принять"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button_red_shape"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="30dp">
 
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="40sp"
+            android:text="@string/exclamation_point"
+            android:textColor="@color/white" />
+    </FrameLayout>
 </RelativeLayout>
