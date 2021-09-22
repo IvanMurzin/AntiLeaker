@@ -1,9 +1,8 @@
 package ru.ivanmurzin.antileaker.utils
 
 import android.util.Log
+import ru.ivanmurzin.antileaker.MY_FILE_LOGGER
 import java.io.File
-
-const val MY_FILE_LOGGER = "MY_LOGGER_TAG_FILE" // тэг, по которому доступны логи приложения
 
 class FileManager(private val searchDir: File) {
 

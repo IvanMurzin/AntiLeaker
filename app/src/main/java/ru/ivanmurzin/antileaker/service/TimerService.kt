@@ -6,10 +6,9 @@ import android.content.SharedPreferences
 import android.os.*
 import android.util.Log
 import androidx.core.content.edit
+import ru.ivanmurzin.antileaker.MY_SERVICE_LOGGER
 import ru.ivanmurzin.antileaker.utils.FileManager
 import ru.ivanmurzin.antileaker.utils.Timer
-
-const val MY_SERVICE_LOGGER = "MY_LOGGER_TAG_SERVICE" // тэг, по которому доступны логи приложения
 
 class TimerService : Service() {
 

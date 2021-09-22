@@ -20,7 +20,7 @@
             android:padding="30dp"
             android:textColor="@color/white"
             android:textSize="30sp"
-            tools:text="Все процессы отключены" />
+            android:text="Все процессы отключены" />
 
         <TextView
             android:id="@+id/button_add"

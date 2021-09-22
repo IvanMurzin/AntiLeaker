@@ -2,8 +2,7 @@ package ru.ivanmurzin.antileaker.utils
 
 import android.os.CountDownTimer
 import android.util.Log
-
-const val MY_TIMER_LOGGER = "MY_LOGGER_TAG_TIMER" // тэг, по которому доступны логи приложения
+import ru.ivanmurzin.antileaker.MY_TIMER_LOGGER
 
 class Timer(var mills: Long, val period: Long, val myOnFinish: () -> Unit) {
 

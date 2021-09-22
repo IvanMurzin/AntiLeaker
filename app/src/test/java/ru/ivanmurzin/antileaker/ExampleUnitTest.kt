@@ -1,10 +1,7 @@
 package ru.ivanmurzin.antileaker
 
-import android.os.Environment
 import org.junit.Test
-
-import org.junit.Assert.*
-import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**

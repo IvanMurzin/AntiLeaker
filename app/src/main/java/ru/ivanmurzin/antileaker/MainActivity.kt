@@ -1,15 +1,21 @@
 package ru.ivanmurzin.antileaker
 
 import android.Manifest
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.edit
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.ivanmurzin.antileaker.service.TimerService
+import ru.ivanmurzin.antileaker.entivity.TimerProcess
+import ru.ivanmurzin.antileaker.utils.MainRecyclerAdapter
+import java.text.SimpleDateFormat
+
+const val MY_TIMER_LOGGER = "MY_LOGGER_TAG_TIMER" // тэг, по которому доступны логи приложения
+const val MY_FILE_LOGGER = "MY_LOGGER_TAG_FILE" // тэг, по которому доступны логи приложения
+const val MY_SERVICE_LOGGER = "MY_LOGGER_TAG_SERVICE" // тэг, по которому доступны логи приложения
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,18 +30,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        button_apply.setOnClickListener {
-            val period = field_period.text.toString().toLong() * 1000 // считываю период удаления
-            val folderName = field_folder.text.toString() // считываю название удаляемой папки
-            text_info.text = "Папка: $folderName\nУдаляется каждые: ${period / 1000} sec"
-            val expireTime = System.currentTimeMillis() + period // время первого удаления
-            storage.edit {
-                putLong("expireTime", expireTime) // записываю время первого удаления
-                putLong("period", period) // записываю период удаления
-                putString("folderName", folderName) // записываю название удаляемой папки
-            }
-            startService(Intent(this, TimerService::class.java)) // запускаю сервис
-        }
+        var period = 25*60*1000L // считываю период удаления
+        var folderName = "AwesomeFolder" // считываю название удаляемой папки
+        var expireTime = System.currentTimeMillis() + period // время первого удаления
+        val firstProcess = TimerProcess(folderName, period)
+        period = 17*60*1000L// считываю период удаления
+        folderName = "CoolFolder" // считываю название удаляемой папки
+        expireTime = System.currentTimeMillis() + period // время первого удаления
+        val secondProcess = TimerProcess(folderName, period)
+        val processes = arrayOf(firstProcess, secondProcess)
+        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.adapter = MainRecyclerAdapter(processes)
+
     }
 
 

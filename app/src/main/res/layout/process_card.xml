@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     android:background="@drawable/card_process_shape"
     android:orientation="horizontal"
     android:baselineAligned="false">
@@ -15,16 +15,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="20dp"
-        android:layout_weight="4"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_time"
+            android:id="@+id/text_period"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/light_black"
             android:textSize="25sp"
-            tools:text="1 час" />
+            tools:text="01:00" />
 
         <TextView
             android:id="@+id/text_folder_name"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal">
 
         <TextView
@@ -50,15 +50,15 @@
             android:layout_marginStart="20dp"
             android:gravity="center"
             android:textColor="@color/teal_700"
-            android:textSize="12sp"
-            tools:text="Пнб 20 сент." />
+            android:textSize="15sp"
+            tools:text="11:15" />
 
 
         <com.suke.widget.SwitchButton
-            android:id="@+id/switch_compat"
+            android:id="@+id/switch_button"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="end"
             android:layout_marginStart="10dp"
             app:sb_background="@color/grey"
             app:sb_checked_color="@color/teal_700" />
