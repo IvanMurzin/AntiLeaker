@@ -3,4 +3,8 @@
     <string name="plus">+</string>
     <string name="big_red_button">Big red button</string>
     <string name="exclamation_point">!</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+    <string name="folder_name">Имя папки</string>
+    <string name="delete_timer">Таймер удаления</string>
 </resources>

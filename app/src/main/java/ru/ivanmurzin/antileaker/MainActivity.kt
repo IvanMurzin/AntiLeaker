@@ -4,18 +4,14 @@ import android.Manifest
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.ivanmurzin.antileaker.entivity.TimerProcess
 import ru.ivanmurzin.antileaker.utils.MainRecyclerAdapter
-import java.text.SimpleDateFormat
 
-const val MY_TIMER_LOGGER = "MY_LOGGER_TAG_TIMER" // тэг, по которому доступны логи приложения
-const val MY_FILE_LOGGER = "MY_LOGGER_TAG_FILE" // тэг, по которому доступны логи приложения
-const val MY_SERVICE_LOGGER = "MY_LOGGER_TAG_SERVICE" // тэг, по которому доступны логи приложения
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,22 +22,38 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         requestPermissions() // запрашиваю разрешения на чтение и запись файловой системы
         storage = getSharedPreferences("storage", MODE_PRIVATE)
+    }
+
+    override fun onResume() {
+        super.onResume()
         setupUI()
     }
 
     private fun setupUI() {
-        var period = 25*60*1000L // считываю период удаления
-        var folderName = "AwesomeFolder" // считываю название удаляемой папки
-        var expireTime = System.currentTimeMillis() + period // время первого удаления
-        val firstProcess = TimerProcess(folderName, period)
-        period = 17*60*1000L// считываю период удаления
-        folderName = "CoolFolder" // считываю название удаляемой папки
-        expireTime = System.currentTimeMillis() + period // время первого удаления
-        val secondProcess = TimerProcess(folderName, period)
-        val processes = arrayOf(firstProcess, secondProcess)
+        if (storage.getInt("count", 0) == 0)
+            storage.edit {
+                putInt("count", 2)
+                putString("folderName1", "AwesomeFolder")
+                putLong("period1", 2 * 60 * 60 * 1000L)
+                putString("folderName2", "CoolFolder")
+                putLong("period2", 30 * 60 * 1000L)
+            }
+        val count = storage.getInt("count", 0)
+        val processes = mutableListOf<TimerProcess>()
+        for (i in 1..count) {
+            val folderName = storage.getString("folderName$i", "SomeError")!!
+            val time = storage.getLong("period$i", 1 * 60 * 60 * 1000L)
+            processes.add(TimerProcess(folderName, time))
+        }
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = MainRecyclerAdapter(processes)
 
+        button_red.setOnClickListener {
+            storage.edit { clear() }
+            val intent = intent
+            finish()
+            startActivity(intent)
+        }
     }
 
 

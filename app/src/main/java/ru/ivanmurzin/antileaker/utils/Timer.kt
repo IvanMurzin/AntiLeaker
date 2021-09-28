@@ -2,7 +2,6 @@ package ru.ivanmurzin.antileaker.utils
 
 import android.os.CountDownTimer
 import android.util.Log
-import ru.ivanmurzin.antileaker.MY_TIMER_LOGGER
 
 class Timer(var mills: Long, val period: Long, val myOnFinish: () -> Unit) {
 
@@ -10,7 +9,7 @@ class Timer(var mills: Long, val period: Long, val myOnFinish: () -> Unit) {
 
         override fun onTick(millsToFinish: Long) {
             expire = millsToFinish
-            Log.d(MY_TIMER_LOGGER, "remaining: ${millsToFinish / 1000} period: $mills")
+            Log.d(MY_TIMER_LOGGER, "remaining: ${millsToFinish / 1000} period: ${mills/1000}")
         }
 
         override fun onFinish() {

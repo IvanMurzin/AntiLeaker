@@ -1,7 +1,6 @@
 package ru.ivanmurzin.antileaker.utils
 
 import android.util.Log
-import ru.ivanmurzin.antileaker.MY_FILE_LOGGER
 import java.io.File
 
 class FileManager(private val searchDir: File) {

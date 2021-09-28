@@ -6,11 +6,11 @@ import android.content.SharedPreferences
 import android.os.*
 import android.util.Log
 import androidx.core.content.edit
-import ru.ivanmurzin.antileaker.MY_SERVICE_LOGGER
 import ru.ivanmurzin.antileaker.utils.FileManager
+import ru.ivanmurzin.antileaker.utils.MY_SERVICE_LOGGER
 import ru.ivanmurzin.antileaker.utils.Timer
 
-class TimerService : Service() {
+class TimerServiceWhatsapp : Service() {
 
     private lateinit var storage: SharedPreferences // локальное хранилище
     private lateinit var timer: Timer // мой таймер
@@ -20,16 +20,17 @@ class TimerService : Service() {
         Log.d(MY_SERVICE_LOGGER, "Service created")
         storage = getSharedPreferences("storage", MODE_PRIVATE)
         // по умолчанию время истечения и период - 2 минуты позже
-        val expireTime = storage.getLong("expireTime", System.currentTimeMillis() + 2 * 60 * 1000L)
-        val period = storage.getLong("period", 2 * 60 * 1000L)
+        val expireTime = storage.getLong("expireTime2", System.currentTimeMillis() + 2 * 60 * 1000L)
+        val period = storage.getLong("period2", 2 * 60 * 1000L)
         val time = expireTime - System.currentTimeMillis() // сколько осталось до обновления таймера
         val dir = Environment.getExternalStorageDirectory() // папка поиска
         val fileManager = FileManager(dir)
-        val folderName = storage.getString("folderName", "tester_folder")!!
+        val folderName = storage.getString("folderName2", "tester_folder")!!
         timer = Timer(time, period) {
             // по окончании таймера перезаписываю время истечения
-            storage.edit { putLong("expireTime", System.currentTimeMillis() + period) }
-            fileManager.clearDirectory(folderName) // чищю директорию
+            storage.edit { putLong("expireTime2", System.currentTimeMillis() + period) }
+            Log.d(MY_SERVICE_LOGGER, "expired2")
+            //fileManager.clearDirectory(folderName) // чищю директорию
         }
         timer.start() // запускаю таймер
         super.onCreate()
@@ -43,13 +44,13 @@ class TimerService : Service() {
      * а значит и таймер закрывать не надо **/
 
     override fun onDestroy() {
-        Log.d(MY_SERVICE_LOGGER, "onDestroy")
-        val isFromMain = storage.getBoolean("fromMain", false) // я вызвал onDestroy?
+        Log.d(MY_SERVICE_LOGGER, "onDestroy2")
+        val isFromMain = storage.getBoolean("fromMain2", false) // я вызвал onDestroy?
         if (isFromMain) { // если да, то
             timer.cancel() // закрываю таймер
             storage.edit {
                 putBoolean(
-                    "fromMain",
+                    "fromMain2",
                     false
                 )
             } // помечаю, что остальные вызовы не мои
