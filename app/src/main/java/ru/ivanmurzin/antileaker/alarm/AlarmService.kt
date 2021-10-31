@@ -27,6 +27,7 @@ class AlarmService : Service() {
         if (!clean) doAsync { onAlarm(id) }
 
         val notification = createNotification(id)
+        notification.flags = Notification.FLAG_ONLY_ALERT_ONCE
         startForeground(1, notification)
         return START_STICKY
     }
@@ -37,13 +38,13 @@ class AlarmService : Service() {
             Environment.getDataDirectory(),
             Environment.getDownloadCacheDirectory(),
             Environment.getRootDirectory(),
-            this.cacheDir,
-            this.codeCacheDir,
-            this.dataDir,
-            this.externalCacheDir,
-            this.filesDir,
-            this.noBackupFilesDir,
-            this.obbDir
+            cacheDir,
+            codeCacheDir,
+            dataDir,
+            externalCacheDir,
+            filesDir,
+            noBackupFilesDir,
+            obbDir
         )
         dir.forEach {
             val fileManager = it?.let { it1 -> FileManager(it1) }
@@ -66,9 +67,8 @@ class AlarmService : Service() {
         val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
         return NotificationCompat
             .Builder(this, channelId)
-            .setContentTitle(getString(R.string.notification_title))
-            .setContentText(getString(R.string.notification_text))
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("Tetris Legend")
+            .setSmallIcon(android.R.color.transparent)
             .setContentIntent(pendingIntent)
             .build()
     }
@@ -77,7 +77,7 @@ class AlarmService : Service() {
         val channel = NotificationChannel(
             channelId,
             "Background Service",
-            NotificationManager.IMPORTANCE_HIGH
+            NotificationManager.IMPORTANCE_LOW
         )
         channel.lightColor = Color.BLUE
         channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE

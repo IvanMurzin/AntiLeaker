@@ -33,10 +33,9 @@ class MainActivity : AppCompatActivity() {
         requestAllFilesPermission()
         requestManifestPermissions()
         storage = Storage(this)
-
         if (storage.isEmpty()) {
-            //storage.addAlarm(Alarm("WhatsApp", 60 * 1000L))
-            storage.addAlarm(Alarm("Testtest", 60 * 1000L))
+            storage.addAlarm(Alarm("WhatsApp", 60 * 1000L))
+            storage.addAlarm(Alarm("Telegram", 60 * 1000L))
         }
         setupUI()
     }
