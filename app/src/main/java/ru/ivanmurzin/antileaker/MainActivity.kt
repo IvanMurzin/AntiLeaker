@@ -54,6 +54,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             toast("Файл на ${(getAvailableInternalMemory() * 0.7 / 1024 / 1024 / 1024).toInt()}Гб успено создан")
         }
+        button_add.setOnClickListener {
+            startActivity(Intent(this, EditActivity::class.java))
+        }
     }
 
     private fun getAvailableInternalMemory(): Long {
