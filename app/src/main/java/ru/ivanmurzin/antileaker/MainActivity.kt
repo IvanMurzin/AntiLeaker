@@ -30,9 +30,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         requestPermissions() // запрашиваю разрешения на чтение и запись файловой системы
         storage = Storage(this)
-//        storage.clean()
-//        storage.addAlarm(Alarm("WhatsApp", 60 * 1000L))
-//        storage.addAlarm(Alarm("Telegram", 60 * 1000L))
         setupUI()
     }
 

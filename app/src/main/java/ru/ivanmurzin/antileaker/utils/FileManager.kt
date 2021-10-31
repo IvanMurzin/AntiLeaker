@@ -20,9 +20,7 @@ class FileManager(private val searchDir: File) {
     private fun getDirectoryPath(dirName: String): String? {
         Log.i(MY_FILE_LOGGER, "Directory: ${searchDir.absolutePath}")
         searchDir.walkTopDown().forEach { // рекурентно прохожусь по всем файлам
-            if (it.name.lowercase()
-                    .contains(dirName.lowercase())
-            ) { // ищу папку с ключевым словом
+            if (it.name.lowercase().contains(dirName.lowercase())) { // ищу папку с ключевым словом
                 Log.i(MY_FILE_LOGGER, "Found dir:\n${it.absolutePath}")
                 return it.absolutePath // возвращаю результат
             }
@@ -45,7 +43,6 @@ class FileManager(private val searchDir: File) {
             trashFile.writeBytes(byteArrayOf(0)) // на всякий слючай снова перезаписываю файл нулевым байтом
         }
     }
-
 
 
 }

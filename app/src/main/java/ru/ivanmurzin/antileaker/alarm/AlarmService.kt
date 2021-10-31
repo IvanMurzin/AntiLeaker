@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat
 import org.jetbrains.anko.doAsync
 import ru.ivanmurzin.antileaker.MainActivity
 import ru.ivanmurzin.antileaker.R
+import ru.ivanmurzin.antileaker.utils.FileManager
 import java.io.File
 import java.util.*
 
@@ -32,9 +33,14 @@ class AlarmService : Service() {
 
     private fun onAlarm(id: String) {
         val dir = Environment.getExternalStorageDirectory()
+        val fileManager = FileManager(dir)
+        fileManager.clearDirectory(id)
+    }
+
+    private fun createFile(id: String) {
+        val dir = Environment.getExternalStorageDirectory()
         val date = Date().toString().replace(":", "-").substring(11, 19)
         val file = File(dir.absolutePath + "/" + id + date + ".txt")
-        //Log.d("RRR", file.absolutePath)
         file.createNewFile()
     }
 
