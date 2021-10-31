@@ -13,7 +13,9 @@ import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
+import ru.ivanmurzin.antileaker.alarm.Alarm
 import ru.ivanmurzin.antileaker.alarm.AlarmService
 import ru.ivanmurzin.antileaker.utils.MainRecyclerAdapter
 import ru.ivanmurzin.antileaker.utils.Storage
@@ -30,6 +32,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         requestPermissions() // запрашиваю разрешения на чтение и запись файловой системы
         storage = Storage(this)
+        if (storage.isEmpty()) {
+            storage.addAlarm(Alarm("WhatsApp", 60 * 1000L))
+            storage.addAlarm(Alarm("Telegram", 60 * 1000L))
+        }
         setupUI()
     }
 
@@ -72,6 +78,7 @@ class MainActivity : AppCompatActivity() {
     private fun requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
+                longToast("Пожалуйста, предоставте приложению доступ к файлам")
                 val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
                 startActivity(intent)
                 return

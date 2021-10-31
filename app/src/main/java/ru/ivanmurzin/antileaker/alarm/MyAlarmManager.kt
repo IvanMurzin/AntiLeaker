@@ -40,7 +40,7 @@ class MyAlarmManager(private val context: Context) {
         )
         val intent = Intent(context, AlarmService::class.java)
         intent.putExtra("id", alarm.id)
-        intent.putExtra("clean", true)
+        intent.putExtra("clean", false)
         context.startForegroundService(intent)
     }
 

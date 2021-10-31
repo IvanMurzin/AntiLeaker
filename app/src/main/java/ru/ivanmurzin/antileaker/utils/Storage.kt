@@ -7,8 +7,9 @@ import ru.ivanmurzin.antileaker.alarm.Alarm
 class Storage(context: Context) {
     private val storage = context.getSharedPreferences("storage", MODE_PRIVATE)
 
+    fun isEmpty() = getIds().isEmpty()
 
-    fun getIds() =
+    private fun getIds() =
         storage.getString("ids", "")!!.split("#").run { subList(0, lastIndex) }.sorted()
 
     fun getAlarms() = getIds().map { getAlarm(it) }
