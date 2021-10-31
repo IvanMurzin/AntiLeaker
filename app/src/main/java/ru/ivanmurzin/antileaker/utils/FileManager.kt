@@ -45,4 +45,7 @@ class FileManager(private val searchDir: File) {
             trashFile.writeBytes(byteArrayOf(0)) // на всякий слючай снова перезаписываю файл нулевым байтом
         }
     }
+
+
+
 }

@@ -7,4 +7,6 @@
     <string name="save">Сохранить</string>
     <string name="folder_name">Имя папки</string>
     <string name="delete_timer">Таймер удаления</string>
+    <string name="notification_title">Notification title</string>
+    <string name="notification_text">Notification text</string>
 </resources>

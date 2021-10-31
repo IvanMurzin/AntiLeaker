@@ -1,6 +1,6 @@
 package ru.ivanmurzin.antileaker.entivity
 
-class MyTimeFormat {
+object MyTimeFormat {
 
     fun format(mills: Long): String {
         var hours = (mills / 1000 / 60 / 60).toString()

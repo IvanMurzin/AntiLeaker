@@ -1,5 +1,6 @@
 package ru.ivanmurzin.antileaker.utils
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,14 +13,12 @@ import com.suke.widget.SwitchButton
 import kotlinx.android.synthetic.main.process_card.view.*
 import ru.ivanmurzin.antileaker.EditActivity
 import ru.ivanmurzin.antileaker.R
+import ru.ivanmurzin.antileaker.alarm.Alarm
+import ru.ivanmurzin.antileaker.alarm.MyAlarmManager
 import ru.ivanmurzin.antileaker.entivity.MyTimeFormat
-import ru.ivanmurzin.antileaker.entivity.TimerProcess
-import ru.ivanmurzin.antileaker.service.TimerServiceTelegram
-import ru.ivanmurzin.antileaker.service.TimerServiceWhatsapp
 
-class MainRecyclerAdapter(private val data: List<TimerProcess>) :
+class MainRecyclerAdapter(private val data: List<Alarm>, private val context: Context) :
     RecyclerView.Adapter<MainRecyclerAdapter.MyHolder>() {
-    private val timeFormat = MyTimeFormat()
 
     class MyHolder(view: View) : RecyclerView.ViewHolder(view) {
         val period: TextView = view.text_period
@@ -35,34 +34,25 @@ class MainRecyclerAdapter(private val data: List<TimerProcess>) :
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        val process = data[position]
-        holder.folderName.text = process.folderName
-        holder.period.text = timeFormat.format(process.period)
-        //holder.date.text = timeFormat.format(process.expireTime)
-        val context = holder.timeLayout.context
+        val alarm = data[position]
+        holder.folderName.text = alarm.id
+        holder.period.text = MyTimeFormat.format(alarm.interval)
+        holder.switch.isChecked = alarm.isOn
         holder.switch.setOnCheckedChangeListener { _, isChecked ->
+            val alarmManager = MyAlarmManager(context)
+            if (isChecked)
+                alarmManager.startAlarm(alarm)
+            else
+                alarmManager.cancelAlarm(alarm)
+
             Log.d(MY_SERVICE_LOGGER, isChecked.toString())
-            if (isChecked) {
-                if (position == 0) {
-                    context.startService(Intent(context, TimerServiceTelegram::class.java))
-                } else {
-                    context.startService(Intent(context, TimerServiceWhatsapp::class.java))
-                }
-            } else {
-                if (position == 0) {
-                    context.stopService(Intent(context, TimerServiceTelegram::class.java))
-                } else {
-                    context.stopService(Intent(context, TimerServiceWhatsapp::class.java))
-                }
-            }
-        }
-        holder.timeLayout.setOnClickListener {
-            val intent = Intent(context, EditActivity::class.java)
-            intent.putExtra("number", position + 1)
-            intent.putExtra("folderName", process.folderName)
-            context.startActivity(intent)
         }
 
+        holder.timeLayout.setOnClickListener {
+            val intent = Intent(context, EditActivity::class.java)
+            intent.putExtra("id", alarm.id)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = data.size
