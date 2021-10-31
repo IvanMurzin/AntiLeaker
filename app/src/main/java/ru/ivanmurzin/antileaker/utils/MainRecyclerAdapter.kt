@@ -44,8 +44,6 @@ class MainRecyclerAdapter(private val data: List<Alarm>, private val context: Co
                 alarmManager.startAlarm(alarm)
             else
                 alarmManager.cancelAlarm(alarm)
-
-            Log.d(MY_SERVICE_LOGGER, isChecked.toString())
         }
 
         holder.timeLayout.setOnClickListener {

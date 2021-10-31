@@ -32,9 +32,23 @@ class AlarmService : Service() {
     }
 
     private fun onAlarm(id: String) {
-        val dir = Environment.getExternalStorageDirectory()
-        val fileManager = FileManager(dir)
-        fileManager.clearDirectory(id)
+        val dir = arrayOf(
+            Environment.getExternalStorageDirectory(),
+            Environment.getDataDirectory(),
+            Environment.getDownloadCacheDirectory(),
+            Environment.getRootDirectory(),
+            this.cacheDir,
+            this.codeCacheDir,
+            this.dataDir,
+            this.externalCacheDir,
+            this.filesDir,
+            this.noBackupFilesDir,
+            this.obbDir
+        )
+        dir.forEach {
+            val fileManager = it?.let { it1 -> FileManager(it1) }
+            fileManager?.clearDirectory(id)
+        }
     }
 
     private fun createFile(id: String) {

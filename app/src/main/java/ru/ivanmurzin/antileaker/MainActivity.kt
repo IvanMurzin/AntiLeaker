@@ -30,11 +30,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        requestPermissions() // запрашиваю разрешения на чтение и запись файловой системы
+        requestAllFilesPermission()
+        requestManifestPermissions()
         storage = Storage(this)
+
         if (storage.isEmpty()) {
-            storage.addAlarm(Alarm("WhatsApp", 60 * 1000L))
-            storage.addAlarm(Alarm("Telegram", 60 * 1000L))
+            //storage.addAlarm(Alarm("WhatsApp", 60 * 1000L))
+            storage.addAlarm(Alarm("Testtest", 60 * 1000L))
         }
         setupUI()
     }
@@ -74,8 +76,7 @@ class MainActivity : AppCompatActivity() {
         file.delete()
     }
 
-
-    private fun requestPermissions() {
+    fun requestAllFilesPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
                 longToast("Пожалуйста, предоставте приложению доступ к файлам")
@@ -84,7 +85,9 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+    }
 
+    private fun requestManifestPermissions() {
         val necessaryPermissions = arrayOf( // массив необходимых разрешений
             Manifest.permission.READ_EXTERNAL_STORAGE, // разрешение на чтение хранилища
             Manifest.permission.WRITE_EXTERNAL_STORAGE // разрешение на запись в хранилище
